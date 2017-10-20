@@ -2,7 +2,7 @@ import React from 'react'
 import SearchBar from '../components/SearchBar'
 import VideoList from './VideoList'
 import axios from 'axios'
-
+import VideoDetail from '../components/VideoDetail'
 
 const API_END_POINT = 'https://api.themoviedb.org/3/'
 const POPULAR_MOVIES_URL = 'discover/movie?'
@@ -25,6 +25,7 @@ class App extends React.Component {
         return <div>
             <SearchBar/>
             <VideoList/>
+            <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
         </div>
     }
 

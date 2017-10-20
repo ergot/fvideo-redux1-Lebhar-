@@ -1,16 +1,14 @@
 import React from 'react'
 import VideoListItem from '../components/VideoListItem'
 
-const VideoList = () => {
-
-    const movies = ['film1', 'film2', 'film3']
+const VideoList = ({movieList}) => {
 
     return (
         <div>
             <ul>
                 {
-                    movies.map(movie => {
-                         return <VideoListItem key={movie} movie={movie}/>
+                    movieList.map(movie => {
+                         return <VideoListItem key={movie.id} movie={movie}/>
                     })
                 }
 

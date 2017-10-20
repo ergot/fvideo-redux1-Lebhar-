@@ -10,21 +10,32 @@ const API_KEY = 'api_key=d0202279211bbec3135bba06af0b8933'
 
 class App extends React.Component {
 
-    state = {movies:{}, currentMovie:{}}
+    state = {currentMovie:{}, movieList:[]}
 
     componentWillMount = () => {
+        this.initMovies()
+    }
+
+    initMovies = () =>{
         axios.get(`${API_END_POINT}${POPULAR_MOVIES_URL}&${API_KEY}`).then(
             (response)=>{
-                this.setState({movies: response.data.results.slice(1,6), currentMovie: response.data.results[0]})
+                this.setState({movieList: response.data.results.slice(1,6), currentMovie: response.data.results[0]})
             }
         )
     }
 
 
     render(){
+
+        const renderVideoList = () => {
+            if(this.state.movieList.length >4) {
+                return <VideoList movieList={this.state.movieList}/>
+            }
+        }
+
         return <div>
             <SearchBar/>
-            <VideoList/>
+            {renderVideoList()}
             <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
         </div>
     }

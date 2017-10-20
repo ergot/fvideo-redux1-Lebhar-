@@ -39,12 +39,19 @@ class App extends React.Component {
         )
     }
 
+    receiveCallback = (movie) => {
+    this.setState({currentMovie:movie}, ()=> {
+        this.applyVideoToCurrentMovie()
+        })
+    }
 
     render(){
 
+
+
         const renderVideoList = () => {
             if(this.state.movieList.length >4) {
-                return <VideoList movieList={this.state.movieList}/>
+                return <VideoList movieList={this.state.movieList} callback={this.receiveCallback}/>
             }
         }
 
@@ -57,7 +64,7 @@ class App extends React.Component {
             <div className="row">
                 <div className="col-md-8">
                     <Video videoId={this.state.currentMovie.videoId} />
-                    <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
+                    <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview} />
                 </div>
                 <div className="col-md-4">
                     {renderVideoList()}

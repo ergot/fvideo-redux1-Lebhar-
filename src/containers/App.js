@@ -19,7 +19,21 @@ class App extends React.Component {
     initMovies = () =>{
         axios.get(`${API_END_POINT}${POPULAR_MOVIES_URL}&${API_KEY}`).then(
             (response)=>{
+                this.setState({movieList: response.data.results.slice(1,6), currentMovie: response.data.results[0]}, ()=>{
+                    this.applyVideoToCurrentMovie()
+                })
+            }
+        )
+    }
+
+    applyVideoToCurrentMovie () {
+        axios.get(`${API_END_POINT}movie/${this.state.currentMovie.id}?${API_KEY}&append_to_response=videos`).then(
+            (response)=>{
                 this.setState({movieList: response.data.results.slice(1,6), currentMovie: response.data.results[0]})
+                const youtubeKey = response.data.videos.results[0].key
+                let newCurrentMoviesState = this.state.currentMovie
+                newCurrentMoviesState.videoId = youtubeKey
+                this.setState({currentMovie: newCurrentMoviesState})
             }
         )
     }

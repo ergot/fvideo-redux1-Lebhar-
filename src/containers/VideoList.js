@@ -10,7 +10,7 @@ const VideoList = () => {
             <ul>
                 {
                     movies.map(movie => {
-                         return <VideoListItem movie={movies}/>
+                         return <VideoListItem key={movie} movie={movie}/>
                     })
                 }
 

@@ -3,6 +3,7 @@ import SearchBar from '../components/SearchBar'
 import VideoList from './VideoList'
 import axios from 'axios'
 import VideoDetail from '../components/VideoDetail'
+import Video from '../components/Video'
 
 const API_END_POINT = 'https://api.themoviedb.org/3/'
 const POPULAR_MOVIES_URL = 'discover/movie?'
@@ -26,13 +27,13 @@ class App extends React.Component {
         )
     }
 
-    applyVideoToCurrentMovie () {
+    applyVideoToCurrentMovie = () => {
         axios.get(`${API_END_POINT}movie/${this.state.currentMovie.id}?${API_KEY}&append_to_response=videos`).then(
-            (response)=>{
-                this.setState({movieList: response.data.results.slice(1,6), currentMovie: response.data.results[0]})
+            (response)=> {
                 const youtubeKey = response.data.videos.results[0].key
                 let newCurrentMoviesState = this.state.currentMovie
                 newCurrentMoviesState.videoId = youtubeKey
+                console.log(newCurrentMoviesState)
                 this.setState({currentMovie: newCurrentMoviesState})
             }
         )
@@ -49,6 +50,7 @@ class App extends React.Component {
 
         return <div>
             <SearchBar/>
+            <Video videoId={this.state.currentMovie.videoId} />
             {renderVideoList()}
             <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
         </div>

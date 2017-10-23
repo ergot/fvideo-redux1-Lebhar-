@@ -8,6 +8,7 @@ import Video from '../components/Video'
 const API_END_POINT = 'https://api.themoviedb.org/3/'
 const POPULAR_MOVIES_URL = 'discover/movie?'
 const API_KEY = 'api_key=d0202279211bbec3135bba06af0b8933'
+const SEARCH_URL = 'search/movie?language=fr'
 
 class App extends React.Component {
 
@@ -39,26 +40,43 @@ class App extends React.Component {
         )
     }
 
-    receiveCallback = (movie) => {
+    onClickListItem = (movie) => {
     this.setState({currentMovie:movie}, ()=> {
         this.applyVideoToCurrentMovie()
         })
     }
 
+    onClickSeach = (searchText) => {
+
+        if(searchText) {
+            axios.get(`${API_END_POINT}${SEARCH_URL}&${API_KEY}&query=${searchText}`).then(
+                (response)=> {
+                    if(response.data && response.data.results[0]) {
+                        if (response.data.results[0].id != this.state.currentMovie.id) {
+                            this.setState({currentMovie: response.data.results[0]}, ()=>{
+                                this.applyVideoToCurrentMovie()
+                            })
+                        }
+                    }
+                }
+            )
+        }
+
+
+    }
+
     render(){
-
-
 
         const renderVideoList = () => {
             if(this.state.movieList.length >4) {
-                return <VideoList movieList={this.state.movieList} callback={this.receiveCallback}/>
+                return <VideoList movieList={this.state.movieList} callback={this.onClickListItem}/>
             }
         }
 
         return (
             <div>
                 <div className="search_bar">
-                    <SearchBar/>
+                    <SearchBar callback={this.onClickSeach}/>
                 </div>
 
             <div className="row">

@@ -43,6 +43,7 @@ class App extends React.Component {
     onClickListItem = (movie) => {
     this.setState({currentMovie:movie}, ()=> {
         this.applyVideoToCurrentMovie()
+        this.setRecommendation()
         })
     }
 
@@ -55,6 +56,7 @@ class App extends React.Component {
                         if (response.data.results[0].id != this.state.currentMovie.id) {
                             this.setState({currentMovie: response.data.results[0]}, ()=>{
                                 this.applyVideoToCurrentMovie()
+                                this.setRecommendation()
                             })
                         }
                     }
@@ -63,6 +65,14 @@ class App extends React.Component {
         }
 
 
+    }
+
+    setRecommendation = () => {
+        axios.get(`${API_END_POINT}movie/${this.state.currentMovie.id}/recommendations?${API_KEY}&language=fr`).then(
+            (response)=> {
+            this.setState({movieList: response.data.results.slice(0,5)})
+            }
+        )
     }
 
     render(){
